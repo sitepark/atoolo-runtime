@@ -1,0 +1,5 @@
+{"name":"atoolo\/runtime",
+    "autoload": {
+        "files": ["vendor/test.php"]
+    }
+}
