@@ -45,9 +45,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $method = 'updateRuntime';
         $priority = 1;
         return [
-            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority],
-            ScriptEvents::PRE_INSTALL_CMD => [$method, $priority],
-            ScriptEvents::PRE_UPDATE_CMD => [$method, $priority],
+            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority]
         ];
     }
 
