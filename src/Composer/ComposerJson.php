@@ -46,7 +46,7 @@ class ComposerJson
             );
         }
         $this->jsonFile = new JsonFile($composerJsonFile);
-        $content = file_get_contents($composerJsonFile);
+        $content = @file_get_contents($composerJsonFile);
         if ($content === false) {
             throw new RuntimeException(
                 "Failed to read composer.json file: $composerJsonFile"

@@ -1,2 +1,1 @@
-{"name":"atoolo\/runtime","autoload":{
-    }}
+{"name":"atoolo\/runtime","autoload":{"files":["test/abc.php"]}}

@@ -42,7 +42,7 @@ class RuntimeFile
 
         $runtimeOptions = $this->getRuntimeOptions();
 
-        $runtimeTemplate = file_get_contents($runtimeTemplateFile);
+        $runtimeTemplate = @file_get_contents($runtimeTemplateFile);
         if ($runtimeTemplate === false) {
             throw new RuntimeException(
                 'Failed to read runtime template file: '
@@ -77,7 +77,8 @@ class RuntimeFile
         $vendorDir = $this->composer->getConfig()->get('vendor-dir');
         if (!is_string($vendorDir)) {
             throw new RuntimeException(
-                'Unable to determine the vendor directory: ' . $vendorDir
+                'Unable to determine the vendor directory: '
+                . print_r($vendorDir, true)
             );
         }
         $vendorDir = realpath($vendorDir);
