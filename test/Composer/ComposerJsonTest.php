@@ -15,7 +15,7 @@ use RuntimeException;
 class ComposerJsonTest extends TestCase
 {
     private string $testDir = __DIR__
-        . '/../var/test/ComposerJson/';
+        . '/../../var/test/ComposerJson/';
     private string $resourceDir = __DIR__
         . '/../resources/Composer/ComposerJson';
 
