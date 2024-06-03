@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace Atoolo\Runtime\Composer;
 
-use Atoolo\Runtime\AtooloRuntime;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Factory;
 use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
-use InvalidArgumentException;
 use JsonException;
-use RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {

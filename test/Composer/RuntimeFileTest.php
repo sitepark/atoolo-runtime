@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Atoolo\Runtime\Test\Composer;
 
-use Atoolo\Runtime\Composer\ComposerJson;
 use Atoolo\Runtime\Composer\RuntimeFile;
 use Composer\Composer;
 use Composer\Config;
