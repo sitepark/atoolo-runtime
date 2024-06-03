@@ -21,8 +21,7 @@ use RuntimeException;
 #[CoversClass(RuntimeFile::class)]
 class RuntimeFileTest extends TestCase
 {
-    private string $testDir = __DIR__
-    . '/../../var/test/RuntimeFile';
+    private string $testDir = __DIR__ . '/../../var/test/RuntimeFile';
     private string $runtimeFile;
 
     private Composer&Stub $composer;
