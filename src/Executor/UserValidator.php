@@ -55,6 +55,9 @@ class UserValidator implements RuntimeExecutor
      */
     private function validateUser(array $validUsers): void
     {
+        if (empty($validUsers)) {
+            return;
+        }
         $processUser = (posix_getpwuid(posix_geteuid())
             ?: ['name' => posix_geteuid()])['name'];
         if (!in_array($processUser, $validUsers)) {
