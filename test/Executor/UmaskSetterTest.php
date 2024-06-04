@@ -26,8 +26,8 @@ class UmaskSetterTest extends TestCase
 
     public function testSetUmask(): void
     {
-        $iniSetter = new UmaskSetter();
-        $iniSetter->execute('', [
+        $umaskSetter = new UmaskSetter();
+        $umaskSetter->execute('', [
             'package1' => [
                 'umask' => '0123'
             ]
@@ -41,9 +41,9 @@ class UmaskSetterTest extends TestCase
 
     public function testSetUmaskWithoutUmask(): void
     {
-        $iniSetter = new UmaskSetter();
+        $umaskSetter = new UmaskSetter();
         $this->expectNotToPerformAssertions();
-        $iniSetter->execute('', [
+        $umaskSetter->execute('', [
             'package1' => [
             ]
         ]);
@@ -51,8 +51,8 @@ class UmaskSetterTest extends TestCase
 
     public function testSetUmaskTwiceWithSameValue(): void
     {
-        $iniSetter = new UmaskSetter();
-        $iniSetter->execute('', [
+        $umaskSetter = new UmaskSetter();
+        $umaskSetter->execute('', [
             'package1' => [
                 'umask' => '0123'
             ],
@@ -69,9 +69,9 @@ class UmaskSetterTest extends TestCase
 
     public function testSetUmaskTwiceWithDifferentValues(): void
     {
-        $iniSetter = new UmaskSetter();
+        $umaskSetter = new UmaskSetter();
         $this->expectException(RuntimeException::class);
-        $iniSetter->execute('', [
+        $umaskSetter->execute('', [
             'package1' => [
                 'umask' => '0123'
             ],
@@ -83,9 +83,9 @@ class UmaskSetterTest extends TestCase
 
     public function testSetUmaskWithNonNumericValue(): void
     {
-        $iniSetter = new UmaskSetter();
+        $umaskSetter = new UmaskSetter();
         $this->expectException(RuntimeException::class);
-        $iniSetter->execute('', [
+        $umaskSetter->execute('', [
             'package1' => [
                 'umask' => 'abc'
             ],

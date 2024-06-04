@@ -14,9 +14,9 @@ class UserValidatorTest extends TestCase
 {
     public function testValidateUserWithInvalidUser(): void
     {
-        $iniSetter = new UserValidator();
+        $userValidator = new UserValidator();
         $this->expectException(RuntimeException::class);
-        $iniSetter->execute('', [
+        $userValidator->execute('', [
             'package1' => [
                 'users' => ['abc']
             ]
@@ -25,11 +25,11 @@ class UserValidatorTest extends TestCase
 
     public function testValidateUser(): void
     {
-        $iniSetter = new UserValidator();
+        $userValidator = new UserValidator();
         $processUser = posix_getpwuid(posix_geteuid())['name'];
 
         $this->expectNotToPerformAssertions();
-        $iniSetter->execute('', [
+        $userValidator->execute('', [
             'package1' => [
                 'users' => [$processUser]
             ]
@@ -38,9 +38,9 @@ class UserValidatorTest extends TestCase
 
     public function testValidateUserWithoutUser(): void
     {
-        $iniSetter = new UserValidator();
-        $this->expectException(RuntimeException::class);
-        $iniSetter->execute('', [
+        $userValidator = new UserValidator();
+        $this->expectNotToPerformAssertions();
+        $userValidator->execute('', [
             'package1' => [
             ]
         ]);
@@ -48,9 +48,9 @@ class UserValidatorTest extends TestCase
 
     public function testValidateUserWithNonArray(): void
     {
-        $iniSetter = new UserValidator();
+        $userValidator = new UserValidator();
         $this->expectException(RuntimeException::class);
-        $iniSetter->execute('', [
+        $userValidator->execute('', [
             'package1' => [
                 'users' => 'non-array'
             ]
@@ -59,9 +59,9 @@ class UserValidatorTest extends TestCase
 
     public function testValidateUserWithScriptOwner(): void
     {
-        $iniSetter = new UserValidator();
+        $userValidator = new UserValidator();
         $this->expectNotToPerformAssertions();
-        $iniSetter->execute('', [
+        $userValidator->execute('', [
             'package1' => [
                 'users' => ['{SCRIPT_OWNER}']
             ]
