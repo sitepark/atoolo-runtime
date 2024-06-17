@@ -125,22 +125,20 @@ class RuntimeFile
         $runtimeTemplateFile = $rootPackageOptions['template'] ?? null;
         if ($runtimeTemplateFile === null) {
             $runtimeTemplateFile = __DIR__ . '/atoolo_runtime.template';
-        } else {
-            if (!$fs->isAbsolutePath($runtimeTemplateFile)) {
-                $runtimeTemplateFile = $this->projectDir . '/'
-                    . $runtimeTemplateFile;
-            }
-
-            if (!is_file($runtimeTemplateFile)) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'File "%s" defined under '
-                        . '"extra.atoolo.runtime.template"'
-                        . ' in your composer.json file not found.',
-                        $runtimeTemplateFile
-                    )
-                );
-            }
+        }
+        if (!$fs->isAbsolutePath($runtimeTemplateFile)) {
+            $runtimeTemplateFile = $this->projectDir . '/'
+                . $runtimeTemplateFile;
+        }
+        if (!is_file($runtimeTemplateFile)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'File "%s" defined under '
+                    . '"extra.atoolo.runtime.template"'
+                    . ' in your composer.json not found.',
+                    $runtimeTemplateFile
+                )
+            );
         }
 
         return $runtimeTemplateFile;
