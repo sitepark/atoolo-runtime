@@ -105,14 +105,15 @@ class ComposerJson
         $manipulator = new JsonManipulator($this->content);
         if (empty($autoloadFiles)) {
             $manipulator->removeSubNode('autoload', 'files');
+            unset($this->jsonContent['autoload']['files']);
         } else {
             $manipulator->addSubNode('autoload', 'files', $autoloadFiles);
+            $this->jsonContent['autoload']['files'] = $autoloadFiles;
         }
         file_put_contents(
             $this->jsonFile->getPath(),
             $manipulator->getContents()
         );
-        $this->load($this->jsonFile->getPath());
 
         $this->updateAutoloadConfig();
 
