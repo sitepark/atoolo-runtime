@@ -82,11 +82,12 @@ class ComposerJson
         $autoloadFiles[] = $autoloadFile;
         $manipulator = new JsonManipulator($this->content);
         $manipulator->addSubNode('autoload', 'files', $autoloadFiles);
+        $this->jsonContent['autoload']['files'] = $autoloadFiles;
+
         file_put_contents(
             $this->jsonFile->getPath(),
             $manipulator->getContents()
         );
-        $this->load($this->jsonFile->getPath());
 
         $this->updateAutoloadConfig();
 
