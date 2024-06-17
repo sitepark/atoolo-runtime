@@ -185,8 +185,8 @@ class RuntimeFile
         $dirname = $nestingLevel === 0
             ? '__DIR__.'
             : sprintf('dirname(__DIR__, %d)', $nestingLevel);
-        return '' !== $this->projectDir
-            ? $dirname . var_export('/' . $this->projectDir, true)
+        return '' !== $projectDir
+            ? $dirname . var_export('/' . $projectDir, true)
             : $dirname;
     }
 }

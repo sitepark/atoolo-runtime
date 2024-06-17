@@ -14,6 +14,7 @@ use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryManager;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -22,9 +23,14 @@ use RuntimeException;
 class RuntimeFileTest extends TestCase
 {
     private string $testDir = __DIR__ . '/../../var/test/RuntimeFile';
+    private string $resourceDir = __DIR__
+        . '/../resources/Composer/RuntimeFile';
+
     private string $runtimeFile;
 
     private Composer&Stub $composer;
+
+    private RepositoryManager&Stub $repositoryManager;
 
     private InstalledRepositoryInterface&Stub $localRepository;
 
@@ -52,13 +58,13 @@ class RuntimeFileTest extends TestCase
         $this->composer->method('getConfig')
             ->willReturn($config);
 
-        $repositoryManager = $this->createStub(RepositoryManager::class);
+        $this->repositoryManager = $this->createStub(RepositoryManager::class);
         $this->composer->method('getRepositoryManager')
-            ->willReturn($repositoryManager);
+            ->willReturn($this->repositoryManager);
         $this->localRepository = $this->createStub(
             InstalledRepositoryInterface::class
         );
-        $repositoryManager->method('getLocalRepository')
+        $this->repositoryManager->method('getLocalRepository')
             ->willReturn($this->localRepository);
     }
 
@@ -69,6 +75,68 @@ class RuntimeFileTest extends TestCase
             'vendor/atoolo_runtime.php',
             $runtimeFile->getRuntimeFilePath(),
             'Failed to get runtime file path'
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testCreateRuntimeFile(): void
+    {
+        $projectDir = $this->testDir
+            . '/testCreateRuntimeFile';
+        mkdir($projectDir . '/vendor', 0777, true);
+
+        $runtimeFileTemplate = $this->resourceDir . '/atoolo_runtime.template';
+
+        $config = $this->createStub(Config::class);
+        $config->method('get')
+            ->willReturn($projectDir . '/vendor');
+        $composer = $this->createStub(Composer::class);
+        $composer->method('getConfig')
+            ->willReturn($config);
+        $composer->method('getRepositoryManager')
+            ->willReturn($this->repositoryManager);
+
+        $rootPackage = $this->createStub(RootPackageInterface::class);
+        $rootPackage->method('getName')
+            ->willReturn('test/root-package');
+        $rootPackage->method('getExtra')
+            ->willReturn([
+                'atoolo' => [
+                    'runtime' => [
+                        'template' => $runtimeFileTemplate,
+                        'option' => 'B'
+                    ]
+                ]
+            ]);
+        $composer->method('getPackage')
+            ->willReturn($rootPackage);
+        $this->localRepository->method('getPackages')
+            ->willReturn([]);
+
+        $io = $this->createStub(IOInterface::class);
+
+        $runtimeFile = new RuntimeFile($composer, $projectDir);
+        $runtimeFile->updateRuntimeFile($io);
+
+        $runtimeFile = $projectDir . '/vendor/atoolo_runtime.php';
+
+        $this->assertEquals(
+            <<<EOF
+            runtime_class='Atoolo\\\\Runtime\\\\AtooloRuntime'
+            project_dir=dirname(__DIR__, 1)
+            runtime_options=array (
+              'test/root-package' => 
+              array (
+                'template' => '$runtimeFileTemplate',
+                'option' => 'B',
+              ),
+            )
+
+            EOF,
+            file_get_contents($runtimeFile),
+            'Unexpected runtime file content'
         );
     }
 
