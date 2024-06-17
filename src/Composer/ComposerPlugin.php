@@ -10,6 +10,7 @@ use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
+use InvalidArgumentException;
 use JsonException;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
@@ -68,7 +69,8 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * @throws JsonException
-     * @throws InvalidArgumentException if the configured template file does not exist
+     * @throws InvalidArgumentException
+     *  if the configured template file does not exist
      */
     public function updateRuntime(): void
     {
