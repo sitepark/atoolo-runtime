@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atoolo\Runtime\Test\Composer;
 
 use Atoolo\Runtime\Composer\ComposerJson;
+use Atoolo\Runtime\Composer\ComposerJsonFactory;
 use Composer\Composer;
 use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -31,13 +32,14 @@ class ComposerJsonTest extends TestCase
     }
 
     private function createComposerJson(
-        string $composerFilePath
+        string $composerFilePath,
     ): ComposerJson {
+        $factory = new ComposerJsonFactory();
         $composer = $this->createStub(Composer::class);
-        $composerJson = new ComposerJson($composer);
-        $composerJson->load($composerFilePath);
-
-        return $composerJson;
+        return $factory->create(
+            $composer,
+            $composerFilePath
+        );
     }
 
     public function testGetPath(): void
@@ -51,30 +53,18 @@ class ComposerJsonTest extends TestCase
         );
     }
 
-    public function testCreateWithInvalidComposerFilePath(): void
+    public function testGetJsonContent(): void
     {
-        $this->expectException(RuntimeException::class);
-        $this->createComposerJson($this->resourceDir . '/notfound.json');
-    }
-
-    public function testCreateWithNonReadableFile(): void
-    {
-        $nonReadableFile = $this->testDir . '/notreadable.json';
-        try {
-            touch($nonReadableFile);
-            chmod($nonReadableFile, 0000);
-            $this->expectException(RuntimeException::class);
-            $this->createComposerJson($nonReadableFile);
-        } finally {
-            chmod($nonReadableFile, 0644);
-            unlink($nonReadableFile);
-        }
-    }
-
-    public function testCreateWithInvalidJson(): void
-    {
-        $this->expectException(JsonException::class);
-        $this->createComposerJson($this->resourceDir . '/string.txt');
+        $composerFilePath = $this->resourceDir . '/valid-composer.json';
+        $composerJson = $this->createComposerJson($composerFilePath);
+        $this->assertEquals(
+            [
+                'name' => 'atoolo/runtime',
+                'description' => 'valid composer.json test file'
+            ],
+            $composerJson->getJsonContent(),
+            'Unexpected JSON content'
+        );
     }
 
     public function testAddAutoloadFile(): void

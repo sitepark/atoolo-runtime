@@ -14,19 +14,20 @@ class ComposerJson
 {
     private JsonFile $jsonFile;
 
-    private string $content;
-
     /**
-     * @var array{
+     * @param array{
      *   autoload?: array{
      *     files?: array<string>
      *   }
-     * }
+     * } $jsonContent
      */
-    private array $jsonContent;
-
-    public function __construct(private readonly Composer $composer)
-    {
+    public function __construct(
+        private readonly Composer $composer,
+        string $composerJsonFile,
+        private readonly JsonManipulator $manipulator,
+        private array $jsonContent = []
+    ) {
+        $this->jsonFile = new JsonFile($composerJsonFile);
     }
 
     public function getPath(): string
@@ -35,38 +36,15 @@ class ComposerJson
     }
 
     /**
-     * @throws JsonException
+     * @return array{
+     *   autoload?: array{
+     *     files?: array<string>
+     *   }
+     * }
      */
-    public function load(string $composerJsonFile): void
+    public function getJsonContent(): array
     {
-        $composerJsonFile = realpath($composerJsonFile);
-        if ($composerJsonFile === false) {
-            throw new RuntimeException(
-                "Failed to resolve composer.json file: $composerJsonFile"
-            );
-        }
-        $this->jsonFile = new JsonFile($composerJsonFile);
-        $content = @file_get_contents($composerJsonFile);
-        if ($content === false) {
-            throw new RuntimeException(
-                "Failed to read composer.json file: $composerJsonFile"
-            );
-        }
-        $this->content = $content;
-        $jsonContent = json_decode(
-            $this->content,
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
-
-        if (!is_array($jsonContent)) {
-            throw new JsonException(
-                "Failed to parse composer.json file: $composerJsonFile"
-            );
-        }
-
-        $this->jsonContent = $jsonContent;
+        return $this->jsonContent;
     }
 
     /**
@@ -76,17 +54,16 @@ class ComposerJson
     {
         $autoloadFiles = $this->jsonContent['autoload']['files'] ?? [];
 
-        if (in_array($autoloadFile, $autoloadFiles)) {
+        if (in_array($autoloadFile, $autoloadFiles, true)) {
             return false;
         }
         $autoloadFiles[] = $autoloadFile;
-        $manipulator = new JsonManipulator($this->content);
-        $manipulator->addSubNode('autoload', 'files', $autoloadFiles);
+        $this->manipulator->addSubNode('autoload', 'files', $autoloadFiles);
         $this->jsonContent['autoload']['files'] = $autoloadFiles;
 
         file_put_contents(
             $this->jsonFile->getPath(),
-            $manipulator->getContents()
+            $this->manipulator->getContents()
         );
 
         $this->updateAutoloadConfig();
@@ -103,17 +80,16 @@ class ComposerJson
             return false;
         }
         unset($autoloadFiles[$key]);
-        $manipulator = new JsonManipulator($this->content);
         if (empty($autoloadFiles)) {
-            $manipulator->removeSubNode('autoload', 'files');
+            $this->manipulator->removeSubNode('autoload', 'files');
             unset($this->jsonContent['autoload']['files']);
         } else {
-            $manipulator->addSubNode('autoload', 'files', $autoloadFiles);
+            $this->manipulator->addSubNode('autoload', 'files', $autoloadFiles);
             $this->jsonContent['autoload']['files'] = $autoloadFiles;
         }
         file_put_contents(
             $this->jsonFile->getPath(),
-            $manipulator->getContents()
+            $this->manipulator->getContents()
         );
 
         $this->updateAutoloadConfig();
