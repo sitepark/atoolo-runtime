@@ -6,7 +6,7 @@ parameters:
     typeAliases:
         RuntimePackageOptions: '''
           array{
-            executor?: array<class-string>,
+            executor?: array<class-string<Atoolo\Runtime\Executor\RuntimeExecutor>>,
             umask?: string,
             users?: array<string>,
             ini?: array{
@@ -18,7 +18,7 @@ parameters:
           array{
             template?: string,
             class?: string,
-            executor?: array<class-string>,
+            executor?: array<class-string<Atoolo\Runtime\Executor\RuntimeExecutor>>,
             umask?: string,
             users?: array<string>,
             ini?: array{

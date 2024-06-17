@@ -26,9 +26,7 @@ class AtooloRuntime
         foreach ($options as $packageOptions) {
             $executors[] = array_map(
                 static function (string $executorClass) {
-                    /** @var RuntimeExecutor $executor */
-                    $executor = new $executorClass();
-                    return $executor;
+                    return new $executorClass();
                 },
                 $packageOptions['executor'] ?? []
             );
