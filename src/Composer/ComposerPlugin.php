@@ -68,6 +68,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * @throws JsonException
+     * @throws InvalidArgumentException if the configured template file does not exist
      */
     public function updateRuntime(): void
     {
