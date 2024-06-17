@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atoolo\Runtime\Test\Executor;
 
 use Atoolo\Runtime\Executor\IniSetter;
+use Atoolo\Runtime\Executor\Platform;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -14,7 +15,14 @@ class IniSetterTest extends TestCase
 {
     public function testSetIni(): void
     {
-        $iniSetter = new IniSetter();
+        $platform = $this->createMock(Platform::class);
+        $iniSetter = new IniSetter($platform);
+
+        $platform->expects($this->once())
+            ->method('setIni')
+            ->with('user_agent', 'Test')
+            ->willReturn('');
+
         $iniSetter->execute('', [
             'package1' => [
                 'ini' => [
@@ -24,16 +32,19 @@ class IniSetterTest extends TestCase
                 ]
             ]
         ]);
-        $this->assertEquals(
-            ini_get('user_agent'),
-            'Test',
-            'The user_agent should have been set'
-        );
     }
 
     public function testSetIniTwiceWithSameValueAgain(): void
     {
-        $iniSetter = new IniSetter();
+        $platform = $this->createMock(Platform::class);
+        $iniSetter = new IniSetter($platform);
+
+        $platform->expects($this->once())
+            ->method('setIni')
+            ->with('user_agent', 'Test')
+            ->willReturn('');
+
+
         $iniSetter->execute('', [
             'package1' => [
                 'ini' => [
@@ -50,16 +61,12 @@ class IniSetterTest extends TestCase
                 ]
             ]
         ]);
-        $this->assertEquals(
-            ini_get('user_agent'),
-            'Test',
-            'The user_agent should have been set'
-        );
     }
 
     public function testSetIniTwiceWithDifferentValues(): void
     {
         $iniSetter = new IniSetter();
+
         $this->expectException(RuntimeException::class);
         $iniSetter->execute('', [
             'package1' => [
@@ -111,13 +118,38 @@ class IniSetterTest extends TestCase
 
     public function testSetIniWithNull(): void
     {
-        $iniSetter = new IniSetter();
-        $this->expectNotToPerformAssertions();
+        $platform = $this->createMock(Platform::class);
+        $iniSetter = new IniSetter($platform);
+
+        $platform->expects($this->never())
+            ->method('setIni');
+
         $iniSetter->execute('', [
             'package1' => [
                 'ini' => [
                     'set' => [
                         'user_agent' => null
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    public function testSetIniFailed(): void
+    {
+        $platform = $this->createMock(Platform::class);
+        $iniSetter = new IniSetter($platform);
+
+        $platform->expects($this->once())
+            ->method('setIni')
+            ->with('user_agent', 'Test')
+            ->willReturn(false);
+        $this->expectException(RuntimeException::class);
+        $iniSetter->execute('', [
+            'package1' => [
+                'ini' => [
+                    'set' => [
+                        'user_agent' => 'Test'
                     ]
                 ]
             ]

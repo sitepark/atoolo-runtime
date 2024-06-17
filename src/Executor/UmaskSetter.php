@@ -8,6 +8,11 @@ use RuntimeException;
 
 class UmaskSetter implements RuntimeExecutor
 {
+    public function __construct(
+        private readonly Platform $platform = new Platform()
+    ) {
+    }
+
     public function execute(string $projectDir, array $options): void
     {
         $alreadySet = null;
@@ -37,7 +42,7 @@ class UmaskSetter implements RuntimeExecutor
                 );
             }
 
-            umask((int)$value);
+            $this->platform->umask((int)$value);
             $alreadySet = [
                 'value' => $value,
                 'package' => $package
