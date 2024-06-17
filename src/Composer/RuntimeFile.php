@@ -27,6 +27,9 @@ class RuntimeFile
         return self::RUNTIME_FILE;
     }
 
+    /**
+     * @throws InvalidArgumentException if the configured template file does not exist
+     */
     public function updateRuntimeFile(IOInterface $io): void
     {
         $vendorDir = $this->getVendorDir();
@@ -114,6 +117,9 @@ class RuntimeFile
         return $options;
     }
 
+    /**
+     * @throws InvalidArgumentException if a configured template file does not exist
+     */
     private function getRuntimeTemplateFile(): string
     {
         $fs = new Filesystem();
@@ -174,16 +180,11 @@ class RuntimeFile
             $projectDir = substr($projectDir, 3);
         }
 
-        if (!$nestingLevel) {
-            $projectDir = '__' . 'DIR__.'
-                . var_export('/' . $this->projectDir, true);
-        } else {
-            $projectDir = 'dirname(__' . "DIR__, $nestingLevel)"
-                . ('' !== $this->projectDir ? '.'
-                    . var_export('/' . $this->projectDir, true) : ''
-                );
-        }
-
-        return $projectDir;
+        $dirname = $nestingLevel === 0
+            ? '__DIR__.'
+            : sprintf('dirname(__DIR__, %d)', $nestingLevel);
+        return '' !== $this->projectDir
+            ? $dirname . var_export('/' . $this->projectDir, true)
+            : $dirname;
     }
 }
