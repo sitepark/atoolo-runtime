@@ -158,6 +158,7 @@ class RuntimeFile
         $extra = $package->getExtra();
         return $extra['atoolo']['runtime'] ?? [];
     }
+
     private function getProjectDir(): string
     {
 
