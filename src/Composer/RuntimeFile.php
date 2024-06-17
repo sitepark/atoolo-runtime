@@ -149,7 +149,8 @@ class RuntimeFile
      */
     private function getPackageRuntimeOptions(PackageInterface $package): array
     {
-        /** @var array{
+        /**
+         * @var array{
          *     atoolo?: array{
          *         runtime?: RuntimePackageOptions|RuntimeRootPackageOptions
          *     }
