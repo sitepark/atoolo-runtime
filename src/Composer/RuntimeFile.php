@@ -28,7 +28,8 @@ class RuntimeFile
     }
 
     /**
-     * @throws InvalidArgumentException if the configured template file does not exist
+     * @throws InvalidArgumentException
+     *  if the configured template file does not exist
      */
     public function updateRuntimeFile(IOInterface $io): void
     {
@@ -118,7 +119,8 @@ class RuntimeFile
     }
 
     /**
-     * @throws InvalidArgumentException if a configured template file does not exist
+     * @throws InvalidArgumentException
+     *  if a configured template file does not exist
      */
     private function getRuntimeTemplateFile(): string
     {
