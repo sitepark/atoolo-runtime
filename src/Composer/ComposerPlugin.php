@@ -54,7 +54,6 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io): void
     {
-        self::$activated = true;
         $this->io = $io;
         $this->composerJson = $this->composerJsonFactory->create(
             $composer,
@@ -64,6 +63,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             $composer,
             dirname($this->composerJson->getPath())
         );
+        self::$activated = true;
     }
 
     /**
