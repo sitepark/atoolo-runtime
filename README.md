@@ -6,3 +6,5 @@
 # Atoolo Runtime
 
 Composer plugin for initializing bootstrapping logic such as initialization and requirement validation
+
+[Documentation](https://sitepark.github.io/atoolo-docs/develop/components/runtime/)
