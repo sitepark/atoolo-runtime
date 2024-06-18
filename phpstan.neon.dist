@@ -3,3 +3,27 @@ parameters:
     tmpDir: var/cache/phpstan
     paths:
         - src
+    typeAliases:
+        RuntimePackageOptions: '''
+          array{
+            executor?: array<class-string<Atoolo\Runtime\Executor\RuntimeExecutor>>,
+            umask?: string,
+            users?: array<string>,
+            ini?: array{
+              set?: array<string, mixed>
+            }
+          }
+        '''
+        RuntimeRootPackageOptions: '''
+          array{
+            template?: string,
+            class?: string,
+            executor?: array<class-string<Atoolo\Runtime\Executor\RuntimeExecutor>>,
+            umask?: string,
+            users?: array<string>,
+            ini?: array{
+              set?: array<string, mixed>
+            }
+          }
+        '''
+        RuntimeOptions: 'array<string,RuntimePackageOptions|RuntimeRootPackageOptions>'
