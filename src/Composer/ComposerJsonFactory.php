@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Atoolo\Runtime\Composer;
 
 use Composer\Composer;
-use Composer\Json\JsonFile;
 use Composer\Json\JsonManipulator;
 use JsonException;
 use RuntimeException;

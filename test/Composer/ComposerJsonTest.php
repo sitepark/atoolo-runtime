@@ -7,7 +7,6 @@ namespace Atoolo\Runtime\Test\Composer;
 use Atoolo\Runtime\Composer\ComposerJson;
 use Atoolo\Runtime\Composer\ComposerJsonFactory;
 use Composer\Composer;
-use JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
