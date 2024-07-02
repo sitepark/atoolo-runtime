@@ -16,7 +16,7 @@ class Platform
 
     public function setIni(
         string $name,
-        bool|float|int|string $value
+        bool|float|int|string $value,
     ): false|string {
         return ini_set($name, $value);
     }

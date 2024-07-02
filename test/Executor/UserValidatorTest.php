@@ -18,8 +18,8 @@ class UserValidatorTest extends TestCase
         $this->expectException(RuntimeException::class);
         $userValidator->execute('', [
             'package1' => [
-                'users' => ['abc']
-            ]
+                'users' => ['abc'],
+            ],
         ]);
     }
 
@@ -31,8 +31,8 @@ class UserValidatorTest extends TestCase
         $this->expectNotToPerformAssertions();
         $userValidator->execute('', [
             'package1' => [
-                'users' => [$processUser]
-            ]
+                'users' => [$processUser],
+            ],
         ]);
     }
 
@@ -42,7 +42,7 @@ class UserValidatorTest extends TestCase
         $this->expectNotToPerformAssertions();
         $userValidator->execute('', [
             'package1' => [
-            ]
+            ],
         ]);
     }
 
@@ -52,8 +52,8 @@ class UserValidatorTest extends TestCase
         $this->expectException(RuntimeException::class);
         $userValidator->execute('', [
             'package1' => [
-                'users' => 'non-array'
-            ]
+                'users' => 'non-array',
+            ],
         ]);
     }
 
@@ -63,8 +63,8 @@ class UserValidatorTest extends TestCase
         $this->expectNotToPerformAssertions();
         $userValidator->execute('', [
             'package1' => [
-                'users' => ['{SCRIPT_OWNER}']
-            ]
+                'users' => ['{SCRIPT_OWNER}'],
+            ],
         ]);
     }
 }

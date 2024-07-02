@@ -29,7 +29,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 
     public function __construct(
         ?ComposerJsonFactory $composerJsonFactory = null,
-        ?RuntimeFileFactory $runtimeFileFactory = null
+        ?RuntimeFileFactory $runtimeFileFactory = null,
     ) {
         $this->composerJsonFactory = $composerJsonFactory
             ?? new ComposerJsonFactory();
@@ -46,7 +46,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $method = 'updateRuntime';
         $priority = 1;
         return [
-            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority]
+            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority],
         ];
     }
 
@@ -58,11 +58,11 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
         $this->composerJson = $this->composerJsonFactory->create(
             $composer,
-            Factory::getComposerFile()
+            Factory::getComposerFile(),
         );
         $this->runtimeFile = $this->runtimeFileFactory->create(
             $composer,
-            dirname($this->composerJson->getPath())
+            dirname($this->composerJson->getPath()),
         );
         self::$activated = true;
     }
@@ -76,7 +76,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->runtimeFile->updateRuntimeFile($this->io);
         $this->composerJson->addAutoloadFile(
-            $this->runtimeFile->getRuntimeFilePath()
+            $this->runtimeFile->getRuntimeFilePath(),
         );
     }
 
@@ -89,7 +89,7 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->runtimeFile->removeRuntimeFile($this->io);
         $this->composerJson->removeAutoloadFile(
-            $this->runtimeFile->getRuntimeFilePath()
+            $this->runtimeFile->getRuntimeFilePath(),
         );
     }
 }

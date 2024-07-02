@@ -10,7 +10,7 @@ class RuntimeFileFactory
 {
     public function create(
         Composer $composer,
-        string $projectDir
+        string $projectDir,
     ): RuntimeFile {
         return new RuntimeFile($composer, $projectDir);
     }

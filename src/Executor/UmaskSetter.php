@@ -17,9 +17,8 @@ class UmaskSetter implements RuntimeExecutor
     private ?array $alreadySet = null;
 
     public function __construct(
-        private readonly Platform $platform = new Platform()
-    ) {
-    }
+        private readonly Platform $platform = new Platform(),
+    ) {}
 
     public function execute(string $projectDir, array $options): void
     {
@@ -44,11 +43,11 @@ class UmaskSetter implements RuntimeExecutor
             throw new RuntimeException(
                 "[atoolo.runtime.umask]: '
                     . 'umask must be an integer: "
-                . $value
+                . $value,
             );
         }
 
-        $umask = (int)$value;
+        $umask = (int) $value;
 
         if ($this->alreadySet !== null) {
             $existsValue = $this->alreadySet['value'];
@@ -59,13 +58,13 @@ class UmaskSetter implements RuntimeExecutor
             throw new RuntimeException(
                 "[atoolo.runtime.umask]: '
                     . 'umask is already set to $existsValue '
-                    . ' for package $package"
+                    . ' for package $package",
             );
         }
 
         $this->alreadySet = [
             'value' => $umask,
-            'package' => $package
+            'package' => $package,
         ];
 
         return $umask;

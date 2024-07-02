@@ -28,8 +28,8 @@ class UmaskSetterTest extends TestCase
             ->willReturn(123);
         $umaskSetter->execute('', [
             'package1' => [
-                'umask' => '0123'
-            ]
+                'umask' => '0123',
+            ],
         ]);
     }
 
@@ -46,7 +46,7 @@ class UmaskSetterTest extends TestCase
 
         $umaskSetter->execute('', [
             'package1' => [
-            ]
+            ],
         ]);
     }
 
@@ -65,11 +65,11 @@ class UmaskSetterTest extends TestCase
 
         $umaskSetter->execute('', [
             'package1' => [
-                'umask' => '0123'
+                'umask' => '0123',
             ],
             'package2' => [
-                'umask' => '0123'
-            ]
+                'umask' => '0123',
+            ],
         ]);
     }
 
@@ -81,11 +81,11 @@ class UmaskSetterTest extends TestCase
         $this->expectException(RuntimeException::class);
         $umaskSetter->execute('', [
             'package1' => [
-                'umask' => '0123'
+                'umask' => '0123',
             ],
             'package2' => [
-                'umask' => '0456'
-            ]
+                'umask' => '0456',
+            ],
         ]);
     }
 
@@ -95,7 +95,7 @@ class UmaskSetterTest extends TestCase
         $this->expectException(RuntimeException::class);
         $umaskSetter->execute('', [
             'package1' => [
-                'umask' => 'abc'
+                'umask' => 'abc',
             ],
         ]);
     }

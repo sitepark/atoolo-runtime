@@ -19,7 +19,7 @@ class RuntimeFileFactoryTest extends TestCase
         $composer = $this->createStub(Composer::class);
         $runtimeFile = $factory->create(
             $composer,
-            ''
+            '',
         );
         self::assertInstanceOf(RuntimeFile::class, $runtimeFile);
     }

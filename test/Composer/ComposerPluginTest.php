@@ -29,7 +29,7 @@ class ComposerPluginTest extends TestCase
         $this->assertEquals(
             [],
             ComposerPlugin::getSubscribedEvents(),
-            'Failed to return empty array'
+            'Failed to return empty array',
         );
     }
 
@@ -44,13 +44,13 @@ class ComposerPluginTest extends TestCase
         $method = 'updateRuntime';
         $priority = 1;
         $exprected = [
-            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority]
+            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority],
         ];
 
         $this->assertEquals(
             $exprected,
             ComposerPlugin::getSubscribedEvents(),
-            'Failed to return empty array'
+            'Failed to return empty array',
         );
     }
 
@@ -63,7 +63,7 @@ class ComposerPluginTest extends TestCase
         $runtimeFileFactory = $this->createStub(RuntimeFileFactory::class);
         $plugin = new ComposerPlugin(
             $composerJsonFactory,
-            $runtimeFileFactory
+            $runtimeFileFactory,
         );
 
         $runtimeFile = $this->createMock(RuntimeFile::class);
@@ -90,7 +90,7 @@ class ComposerPluginTest extends TestCase
         $runtimeFileFactory = $this->createStub(RuntimeFileFactory::class);
         $plugin = new ComposerPlugin(
             $composerJsonFactory,
-            $runtimeFileFactory
+            $runtimeFileFactory,
         );
 
         $runtimeFile = $this->createMock(RuntimeFile::class);

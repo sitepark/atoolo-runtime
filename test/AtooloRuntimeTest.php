@@ -26,7 +26,7 @@ class AtooloRuntimeTest extends TestCase
         $runtime->run();
         $this->assertTrue(
             AtooloRuntimeTestExecutor::$executed,
-            'The executor should have been executed'
+            'The executor should have been executed',
         );
     }
 }

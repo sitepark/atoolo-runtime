@@ -26,7 +26,7 @@ class ComposerJsonFactoryTest extends TestCase
         if (is_dir($this->testDir) === false) {
             if (mkdir($this->testDir, 0777, true) === false) {
                 throw new RuntimeException(
-                    'Failed to create directory: ' . $this->testDir
+                    'Failed to create directory: ' . $this->testDir,
                 );
             }
         }
@@ -38,15 +38,15 @@ class ComposerJsonFactoryTest extends TestCase
         $composer = $this->createStub(Composer::class);
         $composerJson = $factory->create(
             $composer,
-            $this->resourceDir . '/valid-composer.json'
+            $this->resourceDir . '/valid-composer.json',
         );
         $this->assertEquals(
             [
                 'name' => 'atoolo/runtime',
-                'description' => 'valid composer.json test file'
+                'description' => 'valid composer.json test file',
             ],
             $composerJson->getJsonContent(),
-            'Unexpected JSON content'
+            'Unexpected JSON content',
         );
     }
 
@@ -57,7 +57,7 @@ class ComposerJsonFactoryTest extends TestCase
         $this->expectException(RuntimeException::class);
         $factory->create(
             $composer,
-            $this->resourceDir . '/notfound.json'
+            $this->resourceDir . '/notfound.json',
         );
     }
 
@@ -75,7 +75,7 @@ class ComposerJsonFactoryTest extends TestCase
             $factory = new ComposerJsonFactory();
             $factory->create(
                 $composer,
-                $nonReadableFile
+                $nonReadableFile,
             );
         } finally {
             chmod($nonReadableFile, 0644);
@@ -90,7 +90,7 @@ class ComposerJsonFactoryTest extends TestCase
         $factory = new ComposerJsonFactory();
         $factory->create(
             $composer,
-            $this->resourceDir . '/string.txt'
+            $this->resourceDir . '/string.txt',
         );
     }
 }

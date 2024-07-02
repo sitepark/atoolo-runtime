@@ -30,7 +30,7 @@ class UserValidator implements RuntimeExecutor
             if (!is_array($users)) {
                 throw new RuntimeException(
                     "[atoolo.runtime.users]: '
-                    . 'users from package $package should be an array: $users"
+                    . 'users from package $package should be an array: $users",
                 );
             }
 
@@ -40,7 +40,7 @@ class UserValidator implements RuntimeExecutor
                     // owner (name) of the current script
                     $validUser[] = get_current_user();
                     // owner (uid) of the current script
-                    $validUser[] = (string)getmyuid();
+                    $validUser[] = (string) getmyuid();
                     continue;
                 }
                 $validUser[] = $user;
@@ -65,7 +65,7 @@ class UserValidator implements RuntimeExecutor
                 "[atoolo.runtime.users]: "
                 . "The current user '$processUser'"
                 . " is not valid. Valid users are: "
-                . implode(', ', $validUsers)
+                . implode(', ', $validUsers),
             );
         }
     }

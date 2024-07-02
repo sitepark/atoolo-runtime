@@ -27,10 +27,10 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => 'Test'
-                    ]
-                ]
-            ]
+                        'user_agent' => 'Test',
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -49,17 +49,17 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => 'Test'
-                    ]
-                ]
+                        'user_agent' => 'Test',
+                    ],
+                ],
             ],
             'package2' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => 'Test'
-                    ]
-                ]
-            ]
+                        'user_agent' => 'Test',
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -72,17 +72,17 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => 'Test'
-                    ]
-                ]
+                        'user_agent' => 'Test',
+                    ],
+                ],
             ],
             'package2' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => 'Test2'
-                    ]
-                ]
-            ]
+                        'user_agent' => 'Test2',
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -94,10 +94,10 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'allow_url_fopen' => 0
-                    ]
-                ]
-            ]
+                        'allow_url_fopen' => 0,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -109,10 +109,10 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => ['non' => 'scalar']
-                    ]
-                ]
-            ]
+                        'user_agent' => ['non' => 'scalar'],
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -128,10 +128,10 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => null
-                    ]
-                ]
-            ]
+                        'user_agent' => null,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -149,10 +149,10 @@ class IniSetterTest extends TestCase
             'package1' => [
                 'ini' => [
                     'set' => [
-                        'user_agent' => 'Test'
-                    ]
-                ]
-            ]
+                        'user_agent' => 'Test',
+                    ],
+                ],
+            ],
         ]);
     }
 }
