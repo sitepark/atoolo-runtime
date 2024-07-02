@@ -24,7 +24,7 @@ class ComposerJson
         private readonly Composer $composer,
         string $composerJsonFile,
         private readonly JsonManipulator $manipulator,
-        private array $jsonContent = []
+        private array $jsonContent = [],
     ) {
         $this->jsonFile = new JsonFile($composerJsonFile);
     }
@@ -62,7 +62,7 @@ class ComposerJson
 
         file_put_contents(
             $this->jsonFile->getPath(),
-            $this->manipulator->getContents()
+            $this->manipulator->getContents(),
         );
 
         $this->updateAutoloadConfig();
@@ -88,7 +88,7 @@ class ComposerJson
         }
         file_put_contents(
             $this->jsonFile->getPath(),
-            $this->manipulator->getContents()
+            $this->manipulator->getContents(),
         );
 
         $this->updateAutoloadConfig();
@@ -99,7 +99,7 @@ class ComposerJson
     public function updateAutoloadConfig(): void
     {
         $this->composer->getPackage()->setAutoload(
-            $this->jsonContent['autoload'] ?? []
+            $this->jsonContent['autoload'] ?? [],
         );
     }
 }

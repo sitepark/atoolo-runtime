@@ -13,13 +13,13 @@ class ComposerJsonFactory
 {
     public function create(
         Composer $composer,
-        string $composerJsonFile
+        string $composerJsonFile,
     ): ComposerJson {
 
         $composerJsonRealPath = realpath($composerJsonFile);
         if ($composerJsonRealPath === false) {
             throw new RuntimeException(
-                "Failed to resolve composer.json file: $composerJsonFile"
+                "Failed to resolve composer.json file: $composerJsonFile",
             );
         }
 
@@ -29,7 +29,7 @@ class ComposerJsonFactory
             $composer,
             $composerJsonRealPath,
             new JsonManipulator($content),
-            $jsonContent
+            $jsonContent,
         );
     }
 
@@ -41,7 +41,7 @@ class ComposerJsonFactory
         $content = @file_get_contents($composerJsonFile);
         if ($content === false) {
             throw new RuntimeException(
-                "Failed to read composer.json file: $composerJsonFile"
+                "Failed to read composer.json file: $composerJsonFile",
             );
         }
         return $content;
@@ -61,12 +61,12 @@ class ComposerJsonFactory
             $content,
             true,
             512,
-            JSON_THROW_ON_ERROR
+            JSON_THROW_ON_ERROR,
         );
 
         if (!is_array($jsonContent)) {
             throw new JsonException(
-                "Failed to parse composer.json file: $composerJsonFile"
+                "Failed to parse composer.json file: $composerJsonFile",
             );
         }
 

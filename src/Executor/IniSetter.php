@@ -17,9 +17,8 @@ class IniSetter implements RuntimeExecutor
     private $alreadySet = [];
 
     public function __construct(
-        private readonly Platform $platform = new Platform()
-    ) {
-    }
+        private readonly Platform $platform = new Platform(),
+    ) {}
 
     /**
      * @param RuntimeOptions $options
@@ -40,7 +39,7 @@ class IniSetter implements RuntimeExecutor
                 if ($value !== null) {
                     $settings[$key] = [
                         'value' => $value,
-                        'package' => $package
+                        'package' => $package,
                     ];
                 }
             }
@@ -52,7 +51,7 @@ class IniSetter implements RuntimeExecutor
                 $package = $setting['package'];
                 throw new RuntimeException(
                     "[atoolo.runtime.init.set]: "
-                    . "Failed to set $key to $value for, package: $package"
+                    . "Failed to set $key to $value for, package: $package",
                 );
             }
         }
@@ -66,7 +65,7 @@ class IniSetter implements RuntimeExecutor
     private function validate(
         string $package,
         string $key,
-        mixed $value
+        mixed $value,
     ): bool|float|int|string|null {
 
         if ($value === null) {
@@ -76,7 +75,7 @@ class IniSetter implements RuntimeExecutor
         if (is_scalar($value) === false) {
             throw new RuntimeException(
                 "[atoolo.runtime.init.set]: "
-                . "Value for $key in package $package must be scalar"
+                . "Value for $key in package $package must be scalar",
             );
         }
 
@@ -88,20 +87,20 @@ class IniSetter implements RuntimeExecutor
             $package  = $this->alreadySet[$key]['package'];
             throw new RuntimeException(
                 "[atoolo.runtime.init.set]: "
-                . "$key is already set to '$existsValue', package: $package"
+                . "$key is already set to '$existsValue', package: $package",
             );
         }
 
         if (ini_set($key, $value) === false) {
             throw new RuntimeException(
                 "[atoolo.runtime.init.set]: "
-                . "Failed to set $key to $value for, package: $package"
+                . "Failed to set $key to $value for, package: $package",
             );
         }
 
         $this->alreadySet[$key] = [
             'value' => $value,
-            'package' => $package
+            'package' => $package,
         ];
 
         return $value;

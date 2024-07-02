@@ -19,7 +19,7 @@ class AtooloRuntime
      */
     public function __construct(
         private readonly string $projectDir,
-        private readonly array $options
+        private readonly array $options,
     ) {
 
         $executors = [];
@@ -28,7 +28,7 @@ class AtooloRuntime
                 static function (string $executorClass) {
                     return new $executorClass();
                 },
-                $packageOptions['executor'] ?? []
+                $packageOptions['executor'] ?? [],
             );
         }
         $this->executor = array_merge(...$executors);

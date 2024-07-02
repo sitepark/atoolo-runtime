@@ -24,7 +24,7 @@ class ComposerJsonTest extends TestCase
         if (is_dir($this->testDir) === false) {
             if (mkdir($this->testDir, 0777, true) === false) {
                 throw new RuntimeException(
-                    'Failed to create directory: ' . $this->testDir
+                    'Failed to create directory: ' . $this->testDir,
                 );
             }
         }
@@ -37,7 +37,7 @@ class ComposerJsonTest extends TestCase
         $composer = $this->createStub(Composer::class);
         return $factory->create(
             $composer,
-            $composerFilePath
+            $composerFilePath,
         );
     }
 
@@ -48,7 +48,7 @@ class ComposerJsonTest extends TestCase
         self::assertEquals(
             realpath($composerFilePath),
             $composerJson->getPath(),
-            'Failed to resolve composer.json file: composer.json'
+            'Failed to resolve composer.json file: composer.json',
         );
     }
 
@@ -59,10 +59,10 @@ class ComposerJsonTest extends TestCase
         $this->assertEquals(
             [
                 'name' => 'atoolo/runtime',
-                'description' => 'valid composer.json test file'
+                'description' => 'valid composer.json test file',
             ],
             $composerJson->getJsonContent(),
-            'Unexpected JSON content'
+            'Unexpected JSON content',
         );
     }
 
@@ -71,8 +71,8 @@ class ComposerJsonTest extends TestCase
         $file = $this->createTestFile(
             'composer-add-autoload-file.json',
             [
-                'name' => 'atoolo/runtime'
-            ]
+                'name' => 'atoolo/runtime',
+            ],
         );
 
         $composerJson = $this->createComposerJson($file);
@@ -81,8 +81,8 @@ class ComposerJsonTest extends TestCase
         $expected = [
             'name' => 'atoolo/runtime',
             'autoload' => [
-                'files' => ['vendor/test.php']
-            ]
+                'files' => ['vendor/test.php'],
+            ],
         ];
 
         $this->assertEquals(
@@ -91,9 +91,9 @@ class ComposerJsonTest extends TestCase
                 file_get_contents($file),
                 true,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
-            'Failed to add autoload file to composer.json'
+            'Failed to add autoload file to composer.json',
         );
     }
 
@@ -104,9 +104,9 @@ class ComposerJsonTest extends TestCase
             [
                 'name' => 'atoolo/runtime',
                 'autoload' => [
-                    'files' => ['vendor/test.php']
-                ]
-            ]
+                    'files' => ['vendor/test.php'],
+                ],
+            ],
         );
 
         $composerJson = $this->createComposerJson($file);
@@ -115,8 +115,8 @@ class ComposerJsonTest extends TestCase
         $expected = [
             'name' => 'atoolo/runtime',
             'autoload' => [
-                'files' => ['vendor/test.php']
-            ]
+                'files' => ['vendor/test.php'],
+            ],
         ];
 
         $this->assertEquals(
@@ -125,9 +125,9 @@ class ComposerJsonTest extends TestCase
                 file_get_contents($file),
                 true,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
-            'Failed to add autoload file to composer.json'
+            'Failed to add autoload file to composer.json',
         );
     }
 
@@ -138,16 +138,16 @@ class ComposerJsonTest extends TestCase
             [
                 'name' => 'atoolo/runtime',
                 'autoload' => [
-                    'files' => ['vendor/test.php']
-                ]
-            ]
+                    'files' => ['vendor/test.php'],
+                ],
+            ],
         );
         $composerJson = $this->createComposerJson($file);
         $composerJson->removeAutoloadFile('vendor/test.php');
 
         $expected = [
             'name' => 'atoolo/runtime',
-            'autoload' => []
+            'autoload' => [],
         ];
 
         $this->assertEquals(
@@ -156,9 +156,9 @@ class ComposerJsonTest extends TestCase
                 file_get_contents($file),
                 true,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
-            'Failed to add autoload file to composer.json'
+            'Failed to add autoload file to composer.json',
         );
     }
 
@@ -168,8 +168,8 @@ class ComposerJsonTest extends TestCase
             'composer-remove-autoload-file.json',
             [
                 'name' => 'atoolo/runtime',
-                'autoload' => []
-            ]
+                'autoload' => [],
+            ],
         );
 
         $composerJson = $this->createComposerJson($file);
@@ -177,7 +177,7 @@ class ComposerJsonTest extends TestCase
 
         $expected = [
             'name' => 'atoolo/runtime',
-            'autoload' => []
+            'autoload' => [],
         ];
 
         $this->assertEquals(
@@ -186,9 +186,9 @@ class ComposerJsonTest extends TestCase
                 file_get_contents($file),
                 true,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
-            'Failed to add autoload file to composer.json'
+            'Failed to add autoload file to composer.json',
         );
     }
 
@@ -202,9 +202,9 @@ class ComposerJsonTest extends TestCase
                     'files' => [
                         'test/abc.php',
                         'vendor/test.php',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         );
 
         $composerJson = $this->createComposerJson($file);
@@ -214,9 +214,9 @@ class ComposerJsonTest extends TestCase
             'name' => 'atoolo/runtime',
             'autoload' => [
                 'files' => [
-                    'test/abc.php'
-                ]
-            ]
+                    'test/abc.php',
+                ],
+            ],
         ];
 
         $this->assertEquals(
@@ -225,9 +225,9 @@ class ComposerJsonTest extends TestCase
                 file_get_contents($file),
                 true,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
-            'Failed to add autoload file to composer.json'
+            'Failed to add autoload file to composer.json',
         );
     }
 
@@ -236,7 +236,7 @@ class ComposerJsonTest extends TestCase
         $file = $this->testDir . '/' . $filenname;
         file_put_contents(
             $file,
-            json_encode($content, JSON_THROW_ON_ERROR)
+            json_encode($content, JSON_THROW_ON_ERROR),
         );
 
         return $file;

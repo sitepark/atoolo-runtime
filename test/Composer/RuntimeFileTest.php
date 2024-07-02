@@ -42,7 +42,7 @@ class RuntimeFileTest extends TestCase
         if (is_dir($dir) === false) {
             if (mkdir($dir, 0777, true) === false) {
                 throw new RuntimeException(
-                    'Failed to create directory: ' . $dir
+                    'Failed to create directory: ' . $dir,
                 );
             }
         }
@@ -62,7 +62,7 @@ class RuntimeFileTest extends TestCase
         $this->composer->method('getRepositoryManager')
             ->willReturn($this->repositoryManager);
         $this->localRepository = $this->createStub(
-            InstalledRepositoryInterface::class
+            InstalledRepositoryInterface::class,
         );
         $this->repositoryManager->method('getLocalRepository')
             ->willReturn($this->localRepository);
@@ -74,7 +74,7 @@ class RuntimeFileTest extends TestCase
         self::assertEquals(
             'vendor/atoolo_runtime.php',
             $runtimeFile->getRuntimeFilePath(),
-            'Failed to get runtime file path'
+            'Failed to get runtime file path',
         );
     }
 
@@ -106,9 +106,9 @@ class RuntimeFileTest extends TestCase
                 'atoolo' => [
                     'runtime' => [
                         'template' => $runtimeFileTemplate,
-                        'option' => 'B'
-                    ]
-                ]
+                        'option' => 'B',
+                    ],
+                ],
             ]);
         $composer->method('getPackage')
             ->willReturn($rootPackage);
@@ -136,7 +136,7 @@ class RuntimeFileTest extends TestCase
 
             EOF,
             file_get_contents($runtimeFile),
-            'Unexpected runtime file content'
+            'Unexpected runtime file content',
         );
     }
 
@@ -152,7 +152,7 @@ class RuntimeFileTest extends TestCase
 
         $runtimeFile = new RuntimeFile(
             $composer,
-            $this->testDir
+            $this->testDir,
         );
         $this->expectException(RuntimeException::class);
         $runtimeFile->updateRuntimeFile($io);
@@ -170,7 +170,7 @@ class RuntimeFileTest extends TestCase
 
         $runtimeFile = new RuntimeFile(
             $composer,
-            $this->testDir
+            $this->testDir,
         );
         $this->expectException(RuntimeException::class);
         $runtimeFile->updateRuntimeFile($io);
@@ -184,20 +184,20 @@ class RuntimeFileTest extends TestCase
             'test/package',
             [
                 'atoolo' => [
-                    'runtime' => ['option' => 'A']
-                ]
-            ]
+                    'runtime' => ['option' => 'A'],
+                ],
+            ],
         );
 
         $packageWithoutExtra = $this->createPackage(
             'test/package',
-            []
+            [],
         );
 
         $this->localRepository->method('getPackages')
             ->willReturn([
                 $package,
-                $packageWithoutExtra
+                $packageWithoutExtra,
             ]);
 
         $rootPackage = $this->createStub(RootPackageInterface::class);
@@ -206,28 +206,28 @@ class RuntimeFileTest extends TestCase
         $rootPackage->method('getExtra')
             ->willReturn([
                 'atoolo' => [
-                    'runtime' => ['option' => 'B']
-                ]
+                    'runtime' => ['option' => 'B'],
+                ],
             ]);
         $this->composer->method('getPackage')
             ->willReturn($rootPackage);
 
         $runtimeFile = new RuntimeFile(
             $this->composer,
-            $this->testDir
+            $this->testDir,
         );
         $runtimeFile->updateRuntimeFile($io);
         $content = file_get_contents($this->runtimeFile);
 
         $expectedOptions = var_export([
             'test/package' => ['option' => 'A'],
-            'test/root-package' => ['option' => 'B']
+            'test/root-package' => ['option' => 'B'],
         ], true);
 
         $this->assertStringContainsString(
             $expectedOptions,
             $content,
-            'Failed to update runtime file'
+            'Failed to update runtime file',
         );
     }
 
@@ -240,14 +240,14 @@ class RuntimeFileTest extends TestCase
 
         $runtimeFile = new RuntimeFile(
             $this->composer,
-            realpath($this->testDir . '/vendor')
+            realpath($this->testDir . '/vendor'),
         );
         $runtimeFile->updateRuntimeFile($io);
         $content = file_get_contents($this->runtimeFile);
         $this->assertStringContainsString(
             '  __' . 'DIR__',
             $content,
-            'Failed to update runtime file'
+            'Failed to update runtime file',
         );
     }
 
@@ -260,15 +260,15 @@ class RuntimeFileTest extends TestCase
         $rootPackage->method('getExtra')
             ->willReturn([
                 'atoolo' => [
-                    'runtime' => ['template' => 'invalid-path']
-                ]
+                    'runtime' => ['template' => 'invalid-path'],
+                ],
             ]);
         $this->composer->method('getPackage')
             ->willReturn($rootPackage);
 
         $runtimeFile = new RuntimeFile(
             $this->composer,
-            $this->testDir
+            $this->testDir,
         );
 
         $this->expectException(InvalidArgumentException::class);
@@ -287,8 +287,8 @@ class RuntimeFileTest extends TestCase
         $rootPackage->method('getExtra')
             ->willReturn([
                 'atoolo' => [
-                    'runtime' => ['template' => 'nonreadable.template']
-                ]
+                    'runtime' => ['template' => 'nonreadable.template'],
+                ],
             ]);
         $this->composer->method('getPackage')
             ->willReturn($rootPackage);
@@ -297,7 +297,7 @@ class RuntimeFileTest extends TestCase
 
         $runtimeFile = new RuntimeFile(
             $this->composer,
-            $this->testDir
+            $this->testDir,
         );
 
 
@@ -321,12 +321,12 @@ class RuntimeFileTest extends TestCase
         touch($file);
         $runtimeFile = new RuntimeFile(
             $this->composer,
-            $this->testDir
+            $this->testDir,
         );
         $runtimeFile->removeRuntimeFile($io);
         $this->assertFileDoesNotExist(
             $file,
-            'Failed to remove runtime file'
+            'Failed to remove runtime file',
         );
     }
 

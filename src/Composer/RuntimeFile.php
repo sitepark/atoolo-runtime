@@ -18,9 +18,8 @@ class RuntimeFile
 
     public function __construct(
         private readonly Composer $composer,
-        private readonly string $projectDir
-    ) {
-    }
+        private readonly string $projectDir,
+    ) {}
 
     public function getRuntimeFilePath(): string
     {
@@ -39,7 +38,7 @@ class RuntimeFile
         $projectDir = $this->getProjectDir();
 
         $rootRuntimeOptions = $this->getPackageRuntimeOptions(
-            $this->composer->getPackage()
+            $this->composer->getPackage(),
         );
         $runtimeClass = $rootRuntimeOptions['class']
             ?? AtooloRuntime::class;
@@ -50,7 +49,7 @@ class RuntimeFile
         if ($runtimeTemplate === false) {
             throw new RuntimeException(
                 'Failed to read runtime template file: '
-                . $runtimeTemplateFile
+                . $runtimeTemplateFile,
             );
         }
         $code = strtr($runtimeTemplate, [
@@ -82,13 +81,13 @@ class RuntimeFile
         if (!is_string($vendorDir)) {
             throw new RuntimeException(
                 'Unable to determine the vendor directory: '
-                . print_r($vendorDir, true)
+                . print_r($vendorDir, true),
             );
         }
         $vendorDir = realpath($vendorDir);
         if ($vendorDir === false) {
             throw new RuntimeException(
-                'Unable to determine the vendor directory.'
+                'Unable to determine the vendor directory.',
             );
         }
 
@@ -105,7 +104,7 @@ class RuntimeFile
 
         $packages = array_merge(
             $repo->getPackages(),
-            [$this->composer->getPackage()]
+            [$this->composer->getPackage()],
         );
         foreach ($packages as $package) {
             $packageOptions = $this->getPackageRuntimeOptions($package);
@@ -128,7 +127,7 @@ class RuntimeFile
 
         /** @var RuntimeRootPackageOptions $rootPackageOptions */
         $rootPackageOptions = $this->getPackageRuntimeOptions(
-            $this->composer->getPackage()
+            $this->composer->getPackage(),
         );
         $runtimeTemplateFile = $rootPackageOptions['template'] ?? null;
         if ($runtimeTemplateFile === null) {
@@ -144,8 +143,8 @@ class RuntimeFile
                     'File "%s" defined under '
                     . '"extra.atoolo.runtime.template"'
                     . ' in your composer.json not found.',
-                    $runtimeTemplateFile
-                )
+                    $runtimeTemplateFile,
+                ),
             );
         }
 
