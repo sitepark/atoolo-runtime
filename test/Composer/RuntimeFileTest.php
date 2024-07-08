@@ -39,12 +39,13 @@ class RuntimeFileTest extends TestCase
         $this->runtimeFile = $this->testDir
             . '/vendor/atoolo_runtime.php';
         $dir = dirname($this->runtimeFile);
-        if (is_dir($dir) === false) {
-            if (mkdir($dir, 0777, true) === false) {
-                throw new RuntimeException(
-                    'Failed to create directory: ' . $dir,
-                );
-            }
+        if (
+            (is_dir($dir) === false)
+            && mkdir($dir, 0777, true) === false
+        ) {
+            throw new RuntimeException(
+                'Failed to create directory: ' . $dir,
+            );
         }
 
         if (is_file($this->runtimeFile)) {
@@ -85,7 +86,7 @@ class RuntimeFileTest extends TestCase
     {
         $projectDir = $this->testDir
             . '/testCreateRuntimeFile';
-        mkdir($projectDir . '/vendor', 0777, true);
+        @mkdir($projectDir . '/vendor', 0777, true);
 
         $runtimeFileTemplate = $this->resourceDir . '/atoolo_runtime.template';
 
