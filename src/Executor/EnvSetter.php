@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Atoolo\Runtime\Executor;
 
 use RuntimeException;
+use Symfony\Component\Dotenv\Dotenv;
 
-class IniSetter implements RuntimeExecutor
+class EnvSetter implements RuntimeExecutor
 {
     /**
      * @var array<string,array{
@@ -16,9 +17,13 @@ class IniSetter implements RuntimeExecutor
      */
     private $alreadySet = [];
 
+    private Dotenv $dotenv;
+
     public function __construct(
         private readonly Platform $platform = new Platform(),
-    ) {}
+    ) {
+        $this->dotenv = new Dotenv();
+    }
 
     /**
      * @param RuntimeOptions $options
@@ -28,13 +33,22 @@ class IniSetter implements RuntimeExecutor
     {
         /**
          * @var array<string,array{
-         *     value: bool|float|int|string,
+         *     value: string,
          *     package: string
          * }> $settings
          */
         $settings = [];
         foreach ($options as $package => $packageOptions) {
-            foreach ($packageOptions['ini']['set'] ?? [] as $key => $value) {
+
+            $file = $packageOptions['env']['file'] ?? '';
+
+            $env = array_merge(
+                $this->loadEnvironmentFile($package, $file),
+                $packageOptions['env']['set'] ?? [],
+            );
+
+
+            foreach ($env as $key => $value) {
                 $value = $this->validate($package, $key, $value);
                 if ($value !== null) {
                     $settings[$key] = [
@@ -47,10 +61,10 @@ class IniSetter implements RuntimeExecutor
 
         foreach ($settings as $key => $setting) {
             $value = $setting['value'];
-            if ($this->platform->setIni($key, $value) === false) {
+            if ($this->platform->putEnv($key, $value) === false) {
                 $package = $setting['package'];
                 throw new RuntimeException(
-                    "[atoolo.runtime.init.set]: "
+                    "[atoolo.runtime.env.set]: "
                     . "Failed to set $key to $value for, package: $package",
                 );
             }
@@ -58,7 +72,6 @@ class IniSetter implements RuntimeExecutor
     }
 
     /**
-     * @return bool|float|int|string|null returns the typed value
      * @throws RuntimeException
      *  if the ini option non-scalar or has already been set by this instance
      */
@@ -66,16 +79,16 @@ class IniSetter implements RuntimeExecutor
         string $package,
         string $key,
         mixed $value,
-    ): bool|float|int|string|null {
+    ): ?string {
 
         if ($value === null) {
             return null;
         }
 
-        if (is_scalar($value) === false) {
+        if (is_string($value) === false) {
             throw new RuntimeException(
                 "[atoolo.runtime.init.set]: "
-                . "Value for $key in package $package must be scalar",
+                . "Value for $key in package $package must be string",
             );
         }
 
@@ -86,7 +99,7 @@ class IniSetter implements RuntimeExecutor
             }
             $package  = $this->alreadySet[$key]['package'];
             throw new RuntimeException(
-                "[atoolo.runtime.init.set]: "
+                "[atoolo.runtime.env.set]: "
                 . "$key is already set to '$existsValue', package: $package",
             );
         }
@@ -97,5 +110,25 @@ class IniSetter implements RuntimeExecutor
         ];
 
         return $value;
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    private function loadEnvironmentFile(string $package, string $file): array
+    {
+        if (empty($file)) {
+            return [];
+        }
+
+        $content = @file_get_contents($file);
+        if ($content === false) {
+            throw new RuntimeException(
+                "[atoolo.runtime.env.file]: "
+                . "Failed to load file $file for, package: $package",
+            );
+        }
+
+        return $this->dotenv->parse($content);
     }
 }
