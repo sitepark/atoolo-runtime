@@ -9,6 +9,10 @@ parameters:
             executor?: array<class-string<Atoolo\Runtime\Executor\RuntimeExecutor>>,
             umask?: string,
             users?: array<string>,
+            env?: array{
+              file?: string,
+              set?: array<string, string>
+            },
             ini?: array{
               set?: array<string, mixed>
             }
@@ -21,6 +25,10 @@ parameters:
             executor?: array<class-string<Atoolo\Runtime\Executor\RuntimeExecutor>>,
             umask?: string,
             users?: array<string>,
+            env?: array{
+              file?: string,
+              set?: array<string, mixed>
+            },
             ini?: array{
               set?: array<string, mixed>
             }

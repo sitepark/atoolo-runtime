@@ -37,7 +37,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             ?? new RuntimeFileFactory();
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string,array<string|int>>
+     */
+    public static function getSubscribedEvents(): array
     {
         if (!self::$activated) {
             return [];
@@ -50,9 +53,6 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         ];
     }
 
-    /**
-     * @throws JsonException
-     */
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->io = $io;
@@ -80,12 +80,12 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
         );
     }
 
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
         self::$activated = false;
     }
 
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
         $this->runtimeFile->removeRuntimeFile($this->io);
         $this->composerJson->removeAutoloadFile(
