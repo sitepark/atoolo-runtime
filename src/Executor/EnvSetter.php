@@ -120,15 +120,11 @@ class EnvSetter implements RuntimeExecutor
         if (empty($file)) {
             return [];
         }
-
-        $content = @file_get_contents($file);
-        if ($content === false) {
-            throw new RuntimeException(
-                "[atoolo.runtime.env.file]: "
-                . "Failed to load file $file for, package: $package",
-            );
+        if (!file_exists($file)) {
+            return [];
         }
 
+        $content = $this->platform->readFile($file);
         return $this->dotenv->parse($content);
     }
 }

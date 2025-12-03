@@ -146,16 +146,18 @@ class EnvSetterTest extends TestCase
         ]);
     }
 
-    public function testWithInvalidEnvironmentFile(): void
+    public function testEnvironmentFileNotExists(): void
     {
         $platform = $this->createMock(Platform::class);
         $envSetter = new EnvSetter($platform);
 
-        $this->expectException(RuntimeException::class);
+        $platform->expects($this->never())
+            ->method('readFile');
+
         $envSetter->execute('', [
             'package1' => [
                 'env' => [
-                    'file' => 'invalid.file',
+                    'file' => 'not-exists.file',
                 ],
             ],
         ]);
@@ -181,7 +183,7 @@ class EnvSetterTest extends TestCase
 
     public function testWithoutEnvironmentFile(): void
     {
-        $platform = $this->createMock(Platform::class);
+        $platform = $this->getMockBuilder(Platform::class)->onlyMethods(['putEnv'])->getMock();
         $envSetter = new EnvSetter($platform);
 
         $expected = [
