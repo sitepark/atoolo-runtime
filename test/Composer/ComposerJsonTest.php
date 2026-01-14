@@ -7,7 +7,6 @@ namespace Atoolo\Runtime\Test\Composer;
 use Atoolo\Runtime\Composer\ComposerJson;
 use Atoolo\Runtime\Composer\ComposerJsonFactory;
 use Composer\Composer;
-use Composer\Package\RootPackageInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -35,10 +34,7 @@ class ComposerJsonTest extends TestCase
         string $composerFilePath,
     ): ComposerJson {
         $factory = new ComposerJsonFactory();
-        $rootPackage = $this->createStub(RootPackageInterface::class);
         $composer = $this->createStub(Composer::class);
-        $composer->method('getPackage')
-            ->willReturn($rootPackage);
         return $factory->create(
             $composer,
             $composerFilePath,
