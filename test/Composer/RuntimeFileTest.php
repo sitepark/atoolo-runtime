@@ -239,6 +239,9 @@ class RuntimeFileTest extends TestCase
         $this->localRepository->method('getPackages')
             ->willReturn([]);
 
+        $rootPackage = $this->createStub(RootPackageInterface::class);
+        $this->composer->method('getPackage')
+            ->willReturn($rootPackage);
         $runtimeFile = new RuntimeFile(
             $this->composer,
             realpath($this->testDir . '/vendor'),
