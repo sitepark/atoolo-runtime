@@ -46,10 +46,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             return [];
         }
 
-        $method = 'updateRuntime';
         $priority = 1;
         return [
-            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority],
+            ScriptEvents::POST_INSTALL_CMD => ['generateRuntime', $priority],
+            ScriptEvents::PRE_AUTOLOAD_DUMP => ['updateRuntime', $priority],
         ];
     }
 
@@ -68,13 +68,22 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
-     * @throws JsonException
      * @throws InvalidArgumentException
      *  if the configured template file does not exist
      */
     public function updateRuntime(): void
     {
         $this->runtimeFile->updateRuntimeFile($this->io);
+    }
+
+    /**
+     * @throws JsonException
+     * @throws InvalidArgumentException
+     *  if the configured template file does not exist
+     */
+    public function generateRuntime(): void
+    {
+        $this->updateRuntime();
         $this->composerJson->addAutoloadFile(
             $this->runtimeFile->getRuntimeFilePath(),
         );
