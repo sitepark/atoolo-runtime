@@ -28,7 +28,7 @@ class RuntimeFile
 
     public function exists(): bool
     {
-        return is_file(self::RUNTIME_FILE);
+        return is_file($this->getVendorDir() . '/atoolo_runtime.php');
     }
 
     /**

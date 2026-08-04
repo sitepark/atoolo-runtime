@@ -54,6 +54,36 @@ class ComposerPluginTest extends TestCase
         );
     }
 
+    public function testGenerateRuntime(): void
+    {
+
+        $composer = $this->createStub(Composer::class);
+        $io = $this->createStub(IOInterface::class);
+        $composerJsonFactory = $this->createStub(ComposerJsonFactory::class);
+        $runtimeFileFactory = $this->createStub(RuntimeFileFactory::class);
+        $plugin = new ComposerPlugin(
+            $composerJsonFactory,
+            $runtimeFileFactory,
+        );
+
+        $runtimeFile = $this->createMock(RuntimeFile::class);
+        $runtimeFile->expects($this->once())
+            ->method('exists')
+            ->willReturn(false);
+        $runtimeFile->expects($this->once())
+            ->method('updateRuntimeFile');
+        $runtimeFileFactory->method('create')
+            ->willReturn($runtimeFile);
+        $composerJson = $this->createMock(ComposerJson::class);
+        $composerJson->expects($this->once())
+            ->method('addAutoloadFile');
+        $composerJsonFactory->method('create')
+            ->willReturn($composerJson);
+
+        $plugin->activate($composer, $io);
+        $plugin->updateRuntime();
+    }
+
     public function testUpdateRuntime(): void
     {
 
@@ -68,11 +98,14 @@ class ComposerPluginTest extends TestCase
 
         $runtimeFile = $this->createMock(RuntimeFile::class);
         $runtimeFile->expects($this->once())
+            ->method('exists')
+            ->willReturn(true);
+        $runtimeFile->expects($this->once())
             ->method('updateRuntimeFile');
         $runtimeFileFactory->method('create')
             ->willReturn($runtimeFile);
         $composerJson = $this->createMock(ComposerJson::class);
-        $composerJson->expects($this->once())
+        $composerJson->expects($this->never())
             ->method('addAutoloadFile');
         $composerJsonFactory->method('create')
             ->willReturn($composerJson);

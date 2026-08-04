@@ -79,6 +79,28 @@ class RuntimeFileTest extends TestCase
         );
     }
 
+    public function testExists(): void
+    {
+        $vendorDir = "$this->testDir/vendor";
+        @mkdir($vendorDir, 0777, true);
+
+        $runtimeFile = new RuntimeFile($this->composer, $this->testDir);
+
+        $path = "$this->testDir/vendor/atoolo_runtime.php";
+        self::assertFalse(
+            $runtimeFile->exists(),
+            "RuntimeFile '$path' should not exist yet",
+        );
+
+        $file = fopen($path, 'w');
+        assert($file !== false, "failed to open $path");
+        fclose($file);
+        self::assertTrue(
+            $runtimeFile->exists(),
+            "RuntimeFile '$path' should exist now",
+        );
+    }
+
     /**
      * @throws Exception
      */
