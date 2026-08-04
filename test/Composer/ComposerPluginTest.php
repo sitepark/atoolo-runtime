@@ -41,10 +41,10 @@ class ComposerPluginTest extends TestCase
         $plugin = new ComposerPlugin();
         $plugin->activate($composer, $io);
 
+        $method = 'updateRuntime';
         $priority = 1;
         $exprected = [
-            ScriptEvents::POST_INSTALL_CMD => ['generateRuntime', $priority],
-            ScriptEvents::PRE_AUTOLOAD_DUMP => ['updateRuntime', $priority],
+            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority],
         ];
 
         $this->assertEquals(
@@ -54,7 +54,7 @@ class ComposerPluginTest extends TestCase
         );
     }
 
-    public function testGenerateRuntime(): void
+    public function testUpdateRuntime(): void
     {
 
         $composer = $this->createStub(Composer::class);
@@ -78,7 +78,7 @@ class ComposerPluginTest extends TestCase
             ->willReturn($composerJson);
 
         $plugin->activate($composer, $io);
-        $plugin->generateRuntime();
+        $plugin->updateRuntime();
     }
 
     public function testUninstall(): void

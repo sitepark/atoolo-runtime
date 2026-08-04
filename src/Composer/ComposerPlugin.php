@@ -46,10 +46,10 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
             return [];
         }
 
+        $method = 'updateRuntime';
         $priority = 1;
         return [
-            ScriptEvents::POST_INSTALL_CMD => ['generateRuntime', $priority],
-            ScriptEvents::PRE_AUTOLOAD_DUMP => ['updateRuntime', $priority],
+            ScriptEvents::PRE_AUTOLOAD_DUMP => [$method, $priority],
         ];
     }
 
@@ -68,25 +68,23 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * @throws JsonException
      * @throws InvalidArgumentException
      *  if the configured template file does not exist
      */
     public function updateRuntime(): void
     {
+        // since composers plugin api has no separate events (or other ways) to
+        // differentiate a "composer require" from a "composer install" or
+        // "composer update" we have to use the existence of the runtime file as
+        // indicator for it beeing a "fresh install".
+        $isFirstInstall = !$this->runtimeFile->exists();
         $this->runtimeFile->updateRuntimeFile($this->io);
-    }
-
-    /**
-     * @throws JsonException
-     * @throws InvalidArgumentException
-     *  if the configured template file does not exist
-     */
-    public function generateRuntime(): void
-    {
-        $this->updateRuntime();
-        $this->composerJson->addAutoloadFile(
-            $this->runtimeFile->getRuntimeFilePath(),
-        );
+        if ($isFirstInstall) {
+            $this->composerJson->addAutoloadFile(
+                $this->runtimeFile->getRuntimeFilePath(),
+            );
+        }
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
