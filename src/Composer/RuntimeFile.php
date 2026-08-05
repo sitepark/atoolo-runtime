@@ -26,6 +26,11 @@ class RuntimeFile
         return self::RUNTIME_FILE;
     }
 
+    public function exists(): bool
+    {
+        return is_file($this->getVendorDir() . '/atoolo_runtime.php');
+    }
+
     /**
      * @throws InvalidArgumentException
      *  if the configured template file does not exist
