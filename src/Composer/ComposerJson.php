@@ -98,8 +98,8 @@ class ComposerJson
 
     public function updateAutoloadConfig(): void
     {
-        $this->composer->getPackage()->setAutoload(
-            $this->jsonContent['autoload'] ?? [],
-        );
+        /** @var array{psr-0?: array<string, array<string>|string>, psr-4?: array<string, array<string>|string>, classmap?: list<string>, files?: list<string>, exclude-from-classmap?: list<string>} $autoload */
+        $autoload = $this->jsonContent['autoload'] ?? [];
+        $this->composer->getPackage()->setAutoload($autoload);
     }
 }

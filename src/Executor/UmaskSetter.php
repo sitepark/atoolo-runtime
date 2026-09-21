@@ -43,7 +43,7 @@ class UmaskSetter implements RuntimeExecutor
             throw new RuntimeException(
                 "[atoolo.runtime.umask]: '
                     . 'umask must be an integer: "
-                . $value,
+                . (is_scalar($value) ? (string) $value : get_debug_type($value)),
             );
         }
 

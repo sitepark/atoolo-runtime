@@ -27,6 +27,9 @@ class UserValidator implements RuntimeExecutor
                 continue;
             }
             $users = $packageOptions['users'];
+            // the declared option type is narrower than what configuration
+            // files actually deliver; the tests cover this branch
+            // @phpstan-ignore function.alreadyNarrowedType
             if (!is_array($users)) {
                 throw new RuntimeException(
                     "[atoolo.runtime.users]: '

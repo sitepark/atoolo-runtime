@@ -70,6 +70,7 @@ class ComposerJsonFactory
             );
         }
 
+        /** @var array{autoload?: array{files?: array<string>}} $jsonContent */
         return $jsonContent;
     }
 }
